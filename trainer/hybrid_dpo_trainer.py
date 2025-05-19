@@ -164,10 +164,10 @@ class CustomDPOTrainer(DPOTrainer):
       enc_rejected_hidden : torch.FloatTensor,
       chosen_rm_rewards: torch.FloatTensor,
       rejected_rm_rewards: torch.FloatTensor,
-      alpha: float = 0.5,  # DPO-RM hybrid weighting factor
+      alpha: float = 0.5,  # DPO-RM utility weighting factor
   ) -> tuple[torch.FloatTensor, torch.FloatTensor, torch.FloatTensor, torch.FloatTensor]:
     """
-    Hybrid DPO loss function combining original DPO with RM-based ranking loss.
+    utility DPO loss function combining original DPO with RM-based ranking loss.
 
     Args:
         chosen_logps: (B,) tensor of model log-probs for chosen samples
@@ -197,7 +197,7 @@ class CustomDPOTrainer(DPOTrainer):
           - F.logsigmoid(-self.beta * logits) * self.label_smoothing
       )
     else:
-      raise ValueError("Only sigmoid supported for hybrid loss.")
+      raise ValueError("Only sigmoid supported for utility loss.")
 
     chosen_rewards = self.beta * (chosen_logps - ref_chosen_logps)
     rejected_rewards = self.beta * (rejected_logps - ref_rejected_logps)
@@ -214,7 +214,7 @@ class CustomDPOTrainer(DPOTrainer):
     if self.custom_config.custom_loss_type == "based_dpo":
       return dpo_losses, chosen_rewards, rejected_rewards, rm_based_losses
 
-    elif self.custom_config.custom_loss_type == "hybrid":
+    elif self.custom_config.custom_loss_type == "utility":
       total_losses = dpo_losses * rm_based_losses
       #print(total_losses, chosen_rewards, rejected_rewards, rm_based_losses)
       return total_losses, chosen_rewards, rejected_rewards, rm_based_losses
@@ -222,7 +222,7 @@ class CustomDPOTrainer(DPOTrainer):
     else:
       return dpo_losses, chosen_rewards, rejected_rewards, rm_based_losses
     # ---------------------------------------
-    # HYBRID LOSS (Combine DPO + RM)
+    # utility LOSS (Combine DPO + RM)
     # ---------------------------------------
 
   def get_batch_loss_metrics(
