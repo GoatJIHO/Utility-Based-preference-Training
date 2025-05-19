@@ -1,0 +1,16 @@
+cache_dir: "{model_cahce_dir}"
+dataset_path: "./data/{train_dataset_path}"
+policy_model_save_path: "./models/policy_model"
+
+scibert:
+  model_name: "allenai/scibert_scivocab_uncased"
+  weight_path: "{tuned scibert weight path}"  # Set to null if no fine-tuned weights are available
+
+encoder:
+  model_name: "microsoft/MiniLM-L12-H384-uncased"
+  weight_path: '{tuned MiniLM weight path}' # Set to null if no fine-tuned weights are available
+
+policy:
+  model_name: "microsoft/Phi-4-mini-instruct"
+reward_lambda: 0.1
+custom_loss_type: "hybrid"
