@@ -44,7 +44,7 @@ policy:
   model_name: "microsoft/Phi-4-mini-instruct"
 
 reward_lambda: 0.1
-custom_loss_type: "hybrid"
+custom_loss_type: "utility"
 ```
 - If no fine-tuned model is available, set the corresponding weight_path to null.
 
@@ -54,7 +54,7 @@ custom_loss_type: "hybrid"
 Run the main training script with:
 
 ```
-python main.py --config_path ./config-phi4-hybrid.yaml
+python main.py --config_path ./config-phi4-utility.yaml
 ```
 This script will:
 
