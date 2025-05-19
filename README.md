@@ -54,7 +54,7 @@ custom_loss_type: "hybrid"
 Run the main training script with:
 
 ```
-python main.py --config_path ./config.yaml
+python main.py --config_path ./config-phi4-hybrid.yaml
 ```
 This script will:
 
