@@ -13,4 +13,4 @@ encoder:
 policy:
   model_name: "microsoft/Phi-4-mini-instruct"
 reward_lambda: 0.1
-custom_loss_type: "hybrid"
+custom_loss_type: "utility"
