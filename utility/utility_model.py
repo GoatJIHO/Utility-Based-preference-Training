@@ -55,6 +55,9 @@ class WHead(nn.Module):
         hidden = self.encoder(**tokens).last_hidden_state[:, 0]
         return hidden
 
-    @torch.no_grad()
+   @torch.no_grad()
     def r_util(self, vector: torch.Tensor, margin: torch.Tensor) -> torch.Tensor:
-        return self.sigmoid(self.w_head(vector)).squeeze(-1) + self.custom_config.reward_lambda * margin.to(self.device)
+        r_int = self.sigmoid(self.w_head(vector)).squeeze(-1)
+        r_ext = torch.tanh(margin.to(self.device))
+        λ = self.custom_config.reward_lambda
+        return λ * r_int + (1 - λ) * r_ext
